@@ -1,9 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+:root {
+    --black-base : #333533;
+    --white-base : #E8EDDF;
+    --yellow : #F5CB5C;
+    --yellow-darker : #ce9c14;
+}
+
+* {
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    background-color: var(--yellow);
+    scroll-behavior: smooth;
+}
+
+nav {
+    background-color: var(--yellow-darker);
+    padding: 0.1em;
+    text-align: center;
+    color: var(--black-base);
+}
+
 .book-element {
-    background-color: bisque;
-    width: 520px;
-    color: black;
-    border-radius: 10px;
-    border: 1px solid black;
-    padding: 10px;
+    background-color: var(--white-base);
+    width: 25em;
+    color: var(--black-base);
+    border-radius: 1em;
+    border: 1px solid var(--black-base);
+    padding: 1.1em;
     text-align: left;
+    margin: 1vh auto;
+    font-size: 15px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    padding: 2em;
+}
+
+#main-form {
+    background-color: var(--white-base);
+    color : var(--black-base);
+    padding: 1.5em;
+    width: 17.5em;
+    height: 23em;
+    text-align: left;
+    margin:0 auto;
+    border: 1px solid var(--black-base);
+    border-radius: 1em;
+}
+
+#main-form input {
+    width: 95%;
+    padding: 0.5em;
+    border: 1px solid var(--black-base);
+    outline: none;
+    border-radius: 0.5em;
+    margin: 5px 0px 5px 0px;
+}
+
+.container-bookshelf {
+    display: flex;
+    flex-direction: row;
+    gap : 2em;
+}
+
+.btn-delete {
+    background-color: rgb(160, 27, 27);
+    color: white;
+    outline: none;
+    border: 1px solid var(--black-base);
+    border-radius: 10px;
+    padding: 0.5em;
+    text-align: center;
+}
+
+.btn-delete:hover {
+    background-color: rgb(77, 15, 15);
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.btn-move {
+    background-color: rgb(27, 160, 56);
+    color: white;
+    outline: none;
+    border: 1px solid var(--black-base);
+    border-radius: 10px;
+    padding: 0.5em;
+    text-align: center;
+}
+
+.btn-move:hover {
+    background-color: rgb(17, 77, 15);
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    html, body {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        font-family: 'Quicksand', sans-serif;
+        background-color: var(--yellow);
+        scroll-behavior: smooth;
+    }
+
 }
