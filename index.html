@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Bookshelf</title>
+</head>
+<body>
+    <div class="container-insert">
+        <form id="main-form">
+            <label for="title">Judul Buku</label> <br>
+            <input type="text" id="title"> <br>
+            <label for="Author">Author</label> <br>
+            <input type="text" id="author"> <br>
+            <label for="Year">Tahun rilis</label> <br>
+            <input type="text" id="year"> <br>
+            <label for="Is done">Selesai dibaca</label> 
+            <input type="checkbox" name="Selesai Dibaca" id="isDone"> <br>
+            <input type="submit" value="Insert Book">
+        </form>
+    </div>
+
+    <div class="container-bookshelf">
+        <div id="undone-books">
+            <h3>Belum Dibaca</h3>
+        </div>
+    
+        <div id="done-books">
+            <h3>Selesai Dibaca</h3>
+        </div>
+    </div>
+
+</body>
+</html>
+<script src="script.js"></script>

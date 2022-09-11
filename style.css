@@ -1,0 +1,9 @@
+.book-element {
+    background-color: bisque;
+    width: 520px;
+    color: black;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: left;
+}
