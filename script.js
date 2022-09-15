@@ -8,13 +8,16 @@ class BookData {
         this.bookId = bookId + "001 - " + new Date()
     }
 }
-// UI Class : Menghandle urusan penampilan UI
+// UI Class : Menghandle urusan penampilan UI elemen/objek
 class UI {
     static displayBooks() {
         const books = Store.getBookInfo();
 
-        books.forEach((book) => UI.addToShelfDone(book));
-        books.forEach((book) => UI.addToShelfUndone(book));
+        if (books.isDone == true) {
+            books.forEach((book) => UI.addToShelfDone(book));
+        } else {
+            books.forEach((book) => UI.addToShelfUndone(book));
+        }  
     }
 
     // Fungsi untuk menambahkan ke shelf buku belum dibaca
@@ -30,8 +33,8 @@ class UI {
             <p> Author : ${book.author} </p> 
             <p> Tahun rilis : ${book.year} </p>
             <p> ID : ${book.bookId} </p>
+            <button class="btn-delete" id="delete-book">Hapus Buku <i class="fa-solid fa-trash"></i></button>
             <hr />
-            <button class="btn-delete" id="delete-book">Hapus Buku <i class="fa-solid fa-trash"></i></button> 
             <button class="btn-move" id="move-book">Sudah selesai <i class="fa-solid fa-check"></i></button>
         `;
 
@@ -43,6 +46,7 @@ class UI {
             el.parentElement.remove();
         }
     }
+
 
 
     static clearInputState() {
@@ -76,6 +80,7 @@ class UI {
         if (ele.classList.contains('btn-delete')) {
             ele.parentElement.remove();
         }
+
     }
 
 }
@@ -114,13 +119,21 @@ document.querySelector('#main-form').addEventListener('submit', (e) => {
 //    1. Hapus buku yang belum dibaca
 document.querySelector('#undone-books').addEventListener('click', (e) => {
     UI.removeBook(e.target);
+    Store.removeBook(e.target.parentElement.previousElementSibling);
 });
 //    2. Hapus buku yang sudah dibaca
 document.querySelector('#done-books').addEventListener('click', (f) => {
     UI.removeDoneBook(f.target);
+    Store.removeDoneBook();
 });
 
+document.querySelector('#deleteAll').addEventListener('click', () => {
+    Store.removeAllData();
+    alert('Seluruh data di localStorage dihapus. \nSilakan reload untuk melihat perubahan');
+})
+
 //  - Memindahkan buku
+
 
 
 // Store : Menghandle localStorage
@@ -141,16 +154,20 @@ class Store {
         localStorage.setItem('books', JSON.stringify(books));
     }
 
-    static deleteBook(bookId) {
+    static removeBook(bookId) {
         const books = Store.getBookInfo();
 
         books.forEach((book, index) => {
-            if (book.bookId == bookId) {
+            if (book.bookId === bookId) {
                 books.splice(index, 1);
             }
         });
 
         localStorage.setItem('books', JSON.stringify(books));
+    }
+
+    static removeAllData = () => {
+        localStorage.removeItem('books');
     }
 }
 
