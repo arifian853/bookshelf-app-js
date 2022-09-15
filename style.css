@@ -118,4 +118,28 @@ nav {
         scroll-behavior: smooth;
     }
 
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        padding: 2em;
+    }
+    
+    .container-bookshelf {
+        display: flex;
+        flex-direction: column;
+        gap : 2em;
+    }
+    
+    .book-element {
+        background-color: var(--white-base);
+        width: 19em;
+        color: var(--black-base);
+        border-radius: 1em;
+        border: 1px solid var(--black-base);
+        padding: 1.1em;
+        text-align: left;
+        margin: 1vh auto;
+        font-size: 15px;
+    }
 }
