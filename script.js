@@ -5,7 +5,7 @@ class BookData {
         this.author = author,
         this.year = year,
         this.isDone = isDone,
-        this.bookId = bookId + "001 - " + new Date()
+        this.bookId = bookId
     }
 }
 // UI Class : Menghandle urusan penampilan UI elemen/objek
@@ -13,11 +13,15 @@ class UI {
     static displayBooks() {
         const books = Store.getBookInfo();
 
-        if (books.isDone == true) {
-            books.forEach((book) => UI.addToShelfDone(book));
-        } else {
-            books.forEach((book) => UI.addToShelfUndone(book));
-        }  
+            books.forEach((book) => {
+            if (book.isDone == 'true') {
+                UI.addToShelfDone(book)
+            } else {
+                UI.addToShelfUndone(book)
+            }
+            
+        });
+        
     }
 
     // Fungsi untuk menambahkan ke shelf buku belum dibaca
@@ -26,16 +30,17 @@ class UI {
 
         const bookElement = document.createElement('div');
         bookElement.setAttribute('class', 'book-element');
-
+    
         bookElement.innerHTML = `
             <h3> ${book.title} </h3>
             <hr />
             <p> Author : ${book.author} </p> 
             <p> Tahun rilis : ${book.year} </p>
             <p> ID : ${book.bookId} </p>
-            <button class="btn-delete" id="delete-book">Hapus Buku <i class="fa-solid fa-trash"></i></button>
+            
             <hr />
-            <button class="btn-move" id="move-book">Sudah selesai <i class="fa-solid fa-check"></i></button>
+            <button class="btn-delete" id="delete-book" onclick="removeTheBook(${book.bookId})">Hapus Buku <i class="fa-solid fa-trash"></i></button>
+            <button class="btn-move" onclick="movingBook(${book.bookId})">Sudah selesai <i class="fa-solid fa-check"></i></button>
         `;
 
         bookLists.appendChild(bookElement);
@@ -46,8 +51,6 @@ class UI {
             el.parentElement.remove();
         }
     }
-
-
 
     static clearInputState() {
         document.querySelector('#title').value = '';
@@ -70,7 +73,8 @@ class UI {
             <p> Tahun rilis : ${book.year} </p>
             <p> ID : ${book.bookId} </p>
             <hr />
-            <button class="btn-delete" id="delete-book">Hapus Buku <i class="fa-solid fa-trash"></i></button> <button class="btn-move" id="move-book">Belum selesai <i class="fa-solid fa-file-export"></i></button>
+            <button class="btn-delete" id="delete-book" onclick="removeTheBook(${book.bookId})">Hapus Buku <i class="fa-solid fa-trash"></i></button> 
+            <button class="btn-move" onclick="movingBookToUndone(${book.bookId})">Belum selesai <i class="fa-solid fa-file-export"></i></button>
         `;
 
         bookLists.appendChild(bookElement);
@@ -80,9 +84,7 @@ class UI {
         if (ele.classList.contains('btn-delete')) {
             ele.parentElement.remove();
         }
-
     }
-
 }
 
 // Event utama : 
@@ -102,11 +104,15 @@ document.querySelector('#main-form').addEventListener('submit', (e) => {
     if (title === '' || author === '' || year === '' || bookId === '') {
         alert('Kolom input tidak boleh kosong')
     } else {
-        const book = new BookData(title, author, year, bookId, isDone);
+            let book;
             
             if (isDone.checked == true) {
+                let bookStatus = 'true';
+                book = new BookData(title, author, year, bookId, bookStatus);
                 UI.addToShelfDone(book);
             } else {
+                let bookStatus = 'false';
+                book = new BookData(title, author, year, bookId, bookStatus);
                 UI.addToShelfUndone(book);
             }
 
@@ -119,22 +125,56 @@ document.querySelector('#main-form').addEventListener('submit', (e) => {
 //    1. Hapus buku yang belum dibaca
 document.querySelector('#undone-books').addEventListener('click', (e) => {
     UI.removeBook(e.target);
-    Store.removeBook(e.target.parentElement.previousElementSibling);
 });
+
 //    2. Hapus buku yang sudah dibaca
 document.querySelector('#done-books').addEventListener('click', (f) => {
     UI.removeDoneBook(f.target);
-    Store.removeDoneBook();
 });
-
+//    3. Hapus buku universal (dari localStorage)
+function removeTheBook(id) {
+    Store.removeBook(id);
+}
+//    4. Hapus seluruh data buku di localStorage (butuh reload web)
 document.querySelector('#deleteAll').addEventListener('click', () => {
     Store.removeAllData();
     alert('Seluruh data di localStorage dihapus. \nSilakan reload untuk melihat perubahan');
 })
 
 //  - Memindahkan buku
+class Move {
+    static moveBookToDone(bookId) {
+        const books = Store.getBookInfo();
 
+            books.forEach((book) => {
+            if (book.bookId == bookId) {
+                book.isDone = 'true'
+            } 
+            localStorage.setItem('books', JSON.stringify(books)); 
+        });
+    }
 
+    static moveBookToUndone(bookId) {
+        const books = Store.getBookInfo();
+
+            books.forEach((book) => {
+            if (book.bookId == bookId) {
+                book.isDone = 'false'
+            } 
+            localStorage.setItem('books', JSON.stringify(books)); 
+        });
+    }
+}
+// Pindahkan buku dari beum dibaca ke sudah dibaca
+function movingBook(done) {
+    Move.moveBookToDone(done)
+    alert('Buku dipindahkan ke rak sudah dibaca. \nSilakan reload untuk melihat perubahan :)')
+}
+// Pindahkan buku dari sudah dibaca ke belum dibaca
+function movingBookToUndone(dones) {
+    Move.moveBookToUndone(dones)
+    alert('Buku dipindahkan ke rak belum dibaca. \nSilakan reload untuk melihat perubahan :)')
+}
 
 // Store : Menghandle localStorage
 class Store {
@@ -156,16 +196,15 @@ class Store {
 
     static removeBook(bookId) {
         const books = Store.getBookInfo();
-
         books.forEach((book, index) => {
-            if (book.bookId === bookId) {
+            if (book.bookId == bookId) {
                 books.splice(index, 1);
             }
         });
 
         localStorage.setItem('books', JSON.stringify(books));
     }
-
+    //Hapus seluruh data
     static removeAllData = () => {
         localStorage.removeItem('books');
     }
