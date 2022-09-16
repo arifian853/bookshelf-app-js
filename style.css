@@ -3,8 +3,8 @@
 :root {
     --black-base : #333533;
     --white-base : #E8EDDF;
-    --yellow : #F5CB5C;
-    --yellow-darker : #ce9c14;
+    --bg : #1C3041;
+    --bg-2 : #36558F;
 }
 
 * {
@@ -18,15 +18,25 @@ html, body {
     margin: 0;
     box-sizing: border-box;
     overflow-x: hidden;
-    background-color: var(--yellow);
+    background-color: var(--bg);
     scroll-behavior: smooth;
+    color: var(--white-base);
 }
 
 nav {
-    background-color: var(--yellow-darker);
+    background-color: var(--bg);
     padding: 0.1em;
     text-align: center;
-    color: var(--black-base);
+    color: var(--white-base);
+    border-bottom: 1px solid var(--white-base);
+}
+
+footer {
+    background-color: var(--bg);
+    padding: 1em;
+    text-align: center;
+    color: var(--white-base);
+    border-top: 1px solid var(--white-base);
 }
 
 .book-element {
@@ -114,7 +124,7 @@ nav {
         box-sizing: border-box;
         overflow-x: hidden;
         font-family: 'Quicksand', sans-serif;
-        background-color: var(--yellow);
+        background-color: var(--bg);
         scroll-behavior: smooth;
     }
 
